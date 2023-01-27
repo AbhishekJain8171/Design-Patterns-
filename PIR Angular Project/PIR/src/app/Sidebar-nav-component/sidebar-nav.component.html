@@ -1,0 +1,60 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+        <button mat-icon-button *ngIf="sidenav.mode ==='over'" onclick="this.blur()" (click)="sidenav.toggle();" > 
+            <mat-icon *ngIf="!sidenav.opened" style="color:black;" >
+                menu
+            </mat-icon>     
+            <mat-icon *ngIf="sidenav.opened" style="color: black;" >
+                 close
+             </mat-icon>   
+        </button>  
+        <div class="imgcontainer">
+            <img src="assets\img\sap.png"  alt="Avatar" class="avatar">
+        </div>  
+        
+    </mat-toolbar-row>
+    
+
+</mat-toolbar>
+
+<!-- mode = "side" opened  -->
+
+<mat-sidenav-container class = "tp-container">
+    <mat-sidenav #sidenav="matSidenav" mode = "side" opened >
+        <section class = "tp-section">
+        <button mat-button class="menu-button">
+            <mat-icon >home</mat-icon>
+            <span>Home</span>
+        </button>
+        </section>
+
+        <mat-divider></mat-divider>
+
+        <section class = "tp-section">
+        <button mat-button class="menu-button" (click)="OpenButtonClicked()">
+            <mat-icon>alarm</mat-icon>
+            <span>Open</span>
+        </button>
+        </section>
+
+        <mat-divider></mat-divider>
+        
+        <section class = "tp-section">
+        <button mat-button class="menu-button" (click)="closedButtonClicked()">
+            <mat-icon>alarm_off</mat-icon>
+            <span>Closed</span>
+        </button>
+        </section>
+
+        <mat-divider></mat-divider>
+
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div >
+        <app-user></app-user>
+        </div>
+    </mat-sidenav-content>
+
+    
+    
+ </mat-sidenav-container>

@@ -1,0 +1,24 @@
+<div class="container">
+ <div class="card">
+   <div class="card-body">
+    <table class="table table-striped">
+       <thead>
+            <th>OutageName</th>
+            <th>Date and Time</th>
+            <th>Outage Started By Person</th>
+            <th>TTR Breached </th>
+            <th>TTI Breached</th>
+       </thead> 
+       <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.outageName}}</td>
+          <td>{{user.IncidentDateTime}}</td>
+          <td>{{user.reporterBy}}</td>
+          <td>{{user.timeToResolve}}</td>
+          <td>{{user.timeToFirstAnnouncement}}</td>
+        </tr>
+       </tbody>
+    </table>
+   <div> 
+ </div>
+</div>
