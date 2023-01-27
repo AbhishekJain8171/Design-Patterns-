@@ -16,23 +16,27 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
+import { ClosedUserComponent } from './Closed-User-Component/closed-user.component';
+import { OpenUserComponentComponent } from './Open-User-Component/open-user-component.component';
 
 
 
 const appRoutes:Routes=[
 {path:'',component:LoginComponent} , 
 {path:'users',canActivate:[AuthGuard] ,component:UserComponent},
-{path:'records',component:SidebarNavComponent} , 
+{path:'records',component:SidebarNavComponent}, 
+{path:'closed',component:ClosedUserComponent},
+{path:'open',component:OpenUserComponentComponent},
 ];
-
-
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     UserComponent,
-    SidebarNavComponent
+    SidebarNavComponent,
+    ClosedUserComponent,
+    OpenUserComponentComponent
   ],
   imports: [
     BrowserModule,

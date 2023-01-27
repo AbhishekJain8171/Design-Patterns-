@@ -8,15 +8,23 @@
             <th>Outage Started By Person</th>
             <th>TTR Breached </th>
             <th>TTI Breached</th>
+            <th>Status</th>
        </thead> 
        <tbody>
-        <tr *ngFor="let user of users">
+         <tr *ngFor="let user of users">
           <td>{{user.outageName}}</td>
           <td>{{user.IncidentDateTime}}</td>
           <td>{{user.reporterBy}}</td>
-          <td>{{user.timeToResolve}}</td>
-          <td>{{user.timeToFirstAnnouncement}}</td>
-        </tr>
+          <td *ngIf="user.timeToResolve>40; else NoTTR">{{"Yes"}}</td>
+          <ng-template #NoTTR>
+           <td>{{"No"}}</td>
+          </ng-template> 
+          <td *ngIf="user.timeToFirstAnnouncement>15; else NoTTI">{{"Yes"}}</td>
+          <ng-template #NoTTI>
+           <td>{{"No"}}</td>
+          </ng-template> 
+          <td>{{user.status}}</td>
+        </tr> 
        </tbody>
     </table>
    <div> 

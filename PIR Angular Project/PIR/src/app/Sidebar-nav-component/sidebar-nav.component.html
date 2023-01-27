@@ -22,7 +22,7 @@
 <mat-sidenav-container class = "tp-container">
     <mat-sidenav #sidenav="matSidenav" mode = "side" opened >
         <section class = "tp-section">
-        <button mat-button class="menu-button">
+        <button mat-button class="menu-button" (click)="homeButtonClicked()">
             <mat-icon >home</mat-icon>
             <span>Home</span>
         </button>
@@ -49,12 +49,21 @@
         <mat-divider></mat-divider>
 
     </mat-sidenav>
-    <mat-sidenav-content>
-        <div >
-        <app-user></app-user>
+    <mat-sidenav-content >
+        <!-- <app-user></app-user> -->
+        <div *ngIf="homeTabClicked">
+            <app-user></app-user>
         </div>
+
+        <div *ngIf=" openTabClicked">
+            <app-open-user-component></app-open-user-component>
+        </div>
+
+        <div *ngIf="closedTabClicked">
+            <app-closed-user></app-closed-user>
+        </div>
+
     </mat-sidenav-content>
 
-    
-    
+
  </mat-sidenav-container>

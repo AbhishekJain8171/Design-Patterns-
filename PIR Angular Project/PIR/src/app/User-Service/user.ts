@@ -11,7 +11,7 @@ export class User {
     Root_Cause_Key:String;
     Root_Cause_Category:String;
     Impairment_Type:String;
-    Status:String;
+    status:String;
     Resolution:String;
     MIM_ID:String;
     GCS_PR_ID:String;
