@@ -1,0 +1,91 @@
+<!--Here are defining Table which to show User information in UI.-->
+<div class="container">
+    <div class="card">
+      <div class="card-body">
+       <table class="table table-striped">
+
+          <!--Here we are defining the column of the table-->
+          <thead>
+               <th>Outage</th>
+               <th>Date</th>
+               <th>Outage Reporter</th>
+               <th>TTR</th>
+               <th>TTI</th>
+               <th>PIR Ticket</th>
+               <th>PIR Status</th>
+          </thead> 
+
+
+          <!--Here we are consuming the information which we store in our users array define in open-user.component.ts file UI-->
+          <tbody>
+
+           <!--Here we are iterating to the users Array-->
+            <ng-container *ngFor="let user of users">  
+            <!--Here we are filtering the records -->     
+            <tr *ngIf="(user.timeToResolve>40 ||user.timeToFirstAnnouncement>15) && user.ticket_ID==null" >
+            
+            <!--Here we are displaying the result to table-->
+             <td >
+              <a href="https://jtrack.wdf.sap.corp/browse/{{user.outageName}}" target="_blank">
+                {{user.outageName}}
+              </a>
+            </td>
+             <td>{{user.IncidentDateTime}}</td>
+             <td >
+              <mat-icon style="margin-right: 8px; color:black;">person</mat-icon>
+              {{user.reporter_FullName}}
+            </td> 
+ 
+
+            <!--Here we defining the Logic for TTR reach or not -->
+            <!--If TTR value is greater then 40 which means "YES" TTR is reached-->
+             <td *ngIf="user.timeToResolve>40; else NoTTR"  style="color:red">{{"Yes"}}</td>
+
+
+             <!--Else TTR not reach which "NO" value-->
+             <ng-template #NoTTR>
+              <td style="color:red">{{"No"}}</td>
+             </ng-template> 
+
+              
+            <!--Here we defining the Logic for TTI reach or not -->
+            <!--If TTi value is greater then 15 which means "YES" TTI is reached-->
+             <td *ngIf="user.timeToFirstAnnouncement>15; else NoTTI" style="color:red">{{"Yes"}}</td>
+
+             <!--Else TTI not reach which "NO" value for TTR-->
+             <ng-template #NoTTI>
+              <td style="color:red">{{"No"}}</td>
+             </ng-template> 
+
+
+                <td *ngIf="user.ticket_ID; else NoTicketID">
+                  <!--Here I am displaying the outage Status-->
+                    <a href="https://jtrack.wdf.sap.corp/browse/{{user.ticket_ID}}" target="_blank" style="color:blue">
+                      {{user.ticket_ID}}
+                    </a>
+                 </td>   
+                <ng-template #NoTicketID>
+                  <td>
+                  {{ "Not Available" }}
+                  </td>
+                </ng-template>
+                
+
+            <!--Here I am displaying the outage Status-->
+            <td *ngIf="user.ticket_Status && user.ticket_Status.length > 0; else NoTicketStatus" >{{user.ticket_Status}} </td>
+            <ng-template #NoTicketStatus>
+             <td>
+              {{"Not Available"}}
+             </td> 
+            </ng-template>
+
+           </tr>
+
+          </ng-container>
+         </tbody>
+       </table>
+      <div> 
+    </div>
+   </div>
+   
+

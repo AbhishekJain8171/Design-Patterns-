@@ -1,0 +1,122 @@
+/* .tp-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+ } */
+
+ .toolbar-heading {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 200px;
+}
+
+ button.notification:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+button.notification:active {
+  box-shadow: none !important;
+}
+
+button.notification:hover .mat-button-focus-overlay {
+  opacity: 0;
+}
+
+.notification-button button.notification:hover {
+  box-shadow: none !important;
+}
+
+.notification-button button:focus,
+.notification-button button:hover,
+.notification-button button:active {
+  box-shadow: none !important;
+}
+
+ .tp-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+    width:100px;  
+    
+ }
+
+ img.avatar {
+   width: 40%;
+   border-radius: 20%; 
+ }
+
+ mat-toolbar {
+   background:white;
+   color:white;
+}
+
+
+ mat-sidenav {
+    margin: 0px;
+    width: 150px;
+    border-right: none;
+    background:white;
+    color: black;
+    padding: 0px;
+    text-align: center;    
+}
+
+mat-sidenav-container {
+   height: calc(100vh - 65px);
+}
+
+.content {
+   height: calc(100vh - 98px);
+   border-radius: 10px;
+   margin:20px;
+   margin-left: 1px;
+   display: flex;
+   justify-content: right;
+   align-items: right;
+   font-size: 1rem;
+   color: lightgray;
+}
+.input-container {
+   display: flex;
+   align-items: center;
+   margin-bottom: 20px;
+ }
+ 
+ label {
+   width: 100px;
+   text-align: right;
+   margin-right: 10px;
+   font-weight: bold;
+ }
+ 
+ input[type="date"] {
+   height: 40px;
+   padding: 10px;
+   font-size: 16px;
+   border-radius: 4px;
+   border: 1px solid lightgray;
+   width: 300px;
+ }
+ 
+ .search-button {
+   padding: 10px 20px;
+   background-color:blue;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+ }
+ 
+ .search-button mat-icon {
+   height: 18px;
+   color: aliceblue;
+   margin-right: 10px;
+ }
+ 

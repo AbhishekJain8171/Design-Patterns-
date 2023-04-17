@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<!-- Login Form --> 
+<form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+
+  <!--Here we are defining image for Login screen-->
+  <div class="imgcontainer">
+    <img src="assets\img\sap.png"  alt="Avatar" class="avatar">
+  </div>
+
+
+  <div class="container">
+     <!--Here we are mentioning Username which we will get from user in the form of input -->
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="uname" required  ngModel >
+
+
+    <!--Here we are mentioning the userpassword which we will in the form of input from user-->
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required ngModel>
+    
+
+    <!--Submit Button --> 
+    <button type="submit" (click)="onLoadServer()">
+       Login
+    </button>
+
+  </div>
+</form>
+</body>
+</html>
+
+
+
+
