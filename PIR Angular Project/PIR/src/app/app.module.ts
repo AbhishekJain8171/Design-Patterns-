@@ -24,6 +24,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { FilterComponent } from './filter/filter.component';
 import { filter } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {MatMenuModule}from '@angular/material/menu';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SpinnerModule } from '@coreui/angular';
+
 
 
 
@@ -65,8 +70,13 @@ const appRoutes:Routes=[
     MatDatepickerModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    NgxPaginationModule
-
+    NgxPaginationModule,
+    MatMenuModule,
+    Ng2SearchPipeModule,
+    MatSlideToggleModule,
+    SpinnerModule, 
+    
+    
   ],
   providers: [AuthGuard,AuthService],
   bootstrap: [AppComponent] 

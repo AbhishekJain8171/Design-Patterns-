@@ -12,43 +12,58 @@ import { Router } from '@angular/router';
   styleUrls: ['./filter.component.css']
 })
 export class FilterComponent implements OnInit {
-  users:User[];
-  //Declare UserId which is used to store information about the user
+
   userId="";
   start="";
+  users:User[];
+  LoginUser='';
+  isAdmin=false;
+  isBanglore=false;
   startDate = new Date("2022-08-02");
   endDate = new Date("2022-09-31");
+  showLoading=true;
+  showTable=false;
   
-  constructor(private userService:UserService,private user:LoginId,private DateService:DataPickerServiceTsService,private router:Router)
+  constructor(private userService:UserService,private user:LoginId,private Service:DataPickerServiceTsService,private router:Router)
   {
-     //Here are using LoginService and Get the current user information and then store in userId
-      this.userId=user.getUserId();
-      this.startDate=new Date(this.DateService.getStartDate());
-      this.endDate=new Date(this.DateService.getEndDate());
-      //Here we are using UserService in order to Get the User information 
-      //Here are subscribe to the User information and then store information in our define Users Array
-      this.userService.getUser(this.userId).subscribe((data:User[])=>{
-          const filteredData = data.filter(item => {
-          const date = new Date(item.incidentDateTime);
-          console.log(date);
-          return date >= this.startDate && date <= this.endDate;
-        });
-         this.users=filteredData;
-      },error =>{
-        //If some error come during subscribe we are printing here
-        console.log(error);
-      });
-       }
-
-       ngOnInit(): void {
-           
-       }
-
-       onBack()
-       {
-        console.log("Back Button clicked")
-        this.router.navigate(['/records']);
-       }
+     this.startDate=new Date(this.Service.getStartDate());
+     this.endDate=new Date(this.Service.getEndDate());
+     this.userService.getUser(this.userId).subscribe((data:User[])=>{
+       const filteredData =data.filter(item => {
+         const date = new Date(item.incident_date_time);
+         return date >= this.startDate && date <= this.endDate;
+       });
+        this.showLoading=false;
+        this.showTable=true;
+        this.users=filteredData;
+    },error =>{
+       console.log(error);
+    });   
+    }
+   ngOnInit() {
+ 
+     this.LoginUser=localStorage.getItem("uuid");
+     //checking if the Login User is Belong to Banglore Location 
+     if(this.LoginUser=='I531804' ||this.LoginUser=='I541900'|| this.LoginUser=='I577365'
+     ||this.LoginUser=='I538309'|| this.LoginUser=='I036000')
+     {
+       this.isBanglore=true;
+     }
+     //check whether the user isAdmin 
+     if(this.LoginUser=='I539240' || this.LoginUser=='I577232'|| this.LoginUser=='I539128'
+     || this.LoginUser=='I544226'||this.LoginUser=='I502998'|| this.LoginUser=='I354797')
+     {
+     this.isAdmin=true;
+     sessionStorage.setItem("isAdmin","true");
+     }
+ 
+ 
+   }
+   BackToPIR()
+   {
+    this.router.navigate(['']);
+   }
+ 
      
    }
   

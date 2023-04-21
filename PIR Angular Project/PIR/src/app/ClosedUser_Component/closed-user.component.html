@@ -1,17 +1,63 @@
 <!--Here are defining Table which to show User information in UI.-->
+<ng-container *ngIf="showLoading">          
+  <div class="loading-container" *ngIf="showLoading">
+    <img src="assets\img\pizza.gif" alt="Loading..." width="200" height="10" id="loading-cell">
+    <span>Loading...</span>
+  </div>
+  
+</ng-container> 
+
+
+<ng-container *ngIf="showTable"> 
 <div class="container">
     <div class="card">
       <div class="card-body">
        <table class="table table-striped">
           <thead>
-               <th>Outage</th>
-               <th>Date</th>
-               <th>Outage Reporter</th>
-               <th>SERVICE</th>
-               <th>TTR</th>
-               <th>TTI</th>
-               <th>PIR Ticket</th>
-               <th>PIR Status</th>
+            <tr>
+              <th class="font-weight-medium text-center">
+                  Outage
+              </th>
+              <th class="font-weight-medium">
+                  Service
+              </th>
+              <th class="font-weight-medium text-center">
+                  Date
+              </th>
+              <th class="font-weight-medium text-center" *ngIf="isAdmin">
+                  Outage Reporter
+              </th>
+
+              <th class="font-weight-medium text-center">
+                Impairment
+            </th>
+              <th class="font-weight-medium text-center">
+                <button mat-button [matMenuTriggerFor]="menu">TTR 
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>     
+                <mat-menu #menu="matMenu">
+                 <button mat-menu-item (click)="TTR_Reach()">Yes</button>
+                 <button mat-menu-item (click)="TTR_Not_Reach()">No</button>
+                <button mat-menu-item (click)="ListOfAllOutages()">All</button>
+              </mat-menu>
+              </th>
+              <th class="font-weight-medium text-center">
+                <button mat-button [matMenuTriggerFor]="menu1">TTI 
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+                <mat-menu #menu1="matMenu">
+                 <button mat-menu-item (click)="TTI_Reach()">Yes</button>
+                 <button mat-menu-item (click)="TTI_Not_Reach()">No</button>
+                <button mat-menu-item (click)="ListOfAllOutages()">All</button>
+                </mat-menu>
+              </th>
+              <th class="font-weight-medium text-center">
+                  PIR Ticket
+              </th>
+              <th class="font-weight-medium text-center">
+                  PIR Status
+              </th>
+            </tr>
           </thead> 
 
           <!--Here we are consuming the information which we store in our users array define in open-user.component.ts file UI-->
@@ -19,63 +65,142 @@
 
              <!--Here we are iterating to the users Array-->
             <ng-container *ngFor="let user of users">  
-              
-            <!--Here we are filtering the records -->    
-            <tr *ngIf="user.timeToResolve<40 && user.timeToFirstAnnouncement<15">
+              <tr> 
 
-             <!--Here we are displaying the result to table--> 
-             <td>
-              <a href="https://jtrack.wdf.sap.corp/browse/{{user.outageName}}" target="_blank">
-                  {{user.outageName}}
-              </a>
-            </td>
-             <td>{{user.IncidentDateTime}}</td>
+                <ng-container *ngIf="isBanglore; else isGlobal"> 
+                <ng-container *ngIf="(user.time_to_resolve>40 ||user.time_to_first_announcement>15) && user.ticket_id==null">
+                <td >
+                 <a href="https://jtrack.wdf.sap.corp/browse/{{user.outage_name}}" target="_blank">
+                   {{user.outage_name}}
+                  
+                 </a>
+               </td>
+                <td>{{user.service_id}}</td>
 
-             <td> <mat-icon style="margin-right: 8px; color:black;">person</mat-icon>
-              {{user.reporter_FullName}}
-             </td>
+                <td>
+               
+                  {{user.incident_date_time}}</td>
 
-             <td>{{user.serviceID}}</td>
 
-            <!--Here we defining the Logic for TTR reach or not -->
-            <!--If TTR value is greater then 40 which means "YES" TTR is reached-->
-             <td *ngIf="user.timeToResolve>40; else NoTTR" style="color:red" >{{"Yes"}}</td>
-             <ng-template #NoTTR>
-              <td style="color:green" >{{"No"}}</td>
-             </ng-template> 
+                <ng-container *ngIf="isAdmin">
+                <td >
+                 <mat-icon style="margin-right: 8px; color:black;">person</mat-icon>
+                 {{user.reporter_full_name}}
+                </td>   
+                </ng-container>
+
 
                
-            <!--Here we defining the Logic for TTI reach or not -->
-            <!--If TTi value is greater then 15 which means "YES" TTI is reached-->
-             <td *ngIf="user.timeToFirstAnnouncement>15; else NoTTI" style="color:red" >{{"Yes"}}</td>
-
-              <!--Else TTI not reach which "NO" value for TTR-->
-             <ng-template #NoTTI>
-              <td style="color:green" >{{"No"}}</td>
-             </ng-template> 
-
-             <td *ngIf="user.ticket_ID; else NoTicketID">
-              <!--Here I am displaying the outage Status-->
-                <a href="https://jtrack.wdf.sap.corp/browse/{{user.ticket_ID}}" target="_blank" style="color:blue">
-                  {{user.ticket_ID}}
-                </a>
-             </td>   
-            <ng-template #NoTicketID>
-              <td>
-              {{ "Not Available" }}
-              </td>
-            </ng-template>
+                <td *ngIf="user.impairment_type&& user.impairment_type.length>0; else NoImpairmentAvailable" >{{user.impairment_type}} </td>
+                <ng-template #NoImpairmentAvailable>
+                <td>
+                 {{"Not Available"}}
+                </td> 
+                </ng-template>
 
 
-            <!--Here I am displaying the outage Status-->
-            <td *ngIf="user.ticket_Status && user.ticket_Status.length > 0; else NoTicketStatus" >{{user.ticket_Status}} </td>
-            <ng-template #NoTicketStatus>
-             <td>
-              {{"Not Available"}}
-             </td> 
-            </ng-template>
+                <td *ngIf="user.time_to_resolve>40; else NoTTR"  style="color:red">{{"Yes"}}</td>
+                <ng-template #NoTTR>
+                 <td style="color:green">{{"No"}}</td>
+                </ng-template> 
+                <td *ngIf="user.time_to_first_announcementt>15; else NoTTI" style="color:red">{{"Yes"}}</td>
+                <ng-template #NoTTI>
+                 <td style="color:green">{{"No"}}</td>
+                </ng-template> 
+                
+                
+                   <td *ngIf="user.ticket_id; else NoTicketID">
+                     <!--Here I am displaying the outage Status-->
+                       <a href="https://jtrack.wdf.sap.corp/browse/{{user.ticket_id}}" target="_blank" style="color:blue">
+                         {{user.ticket_id}}
+                       </a>
+                    </td>   
+                   <ng-template #NoTicketID>
+                     <td>
+                     {{ "Not Available" }}
+                     </td>
+                   </ng-template>  
+
+
+                   
+               <td *ngIf="user.ticket_status && user.ticket_status.length > 0; else NoTicketStatus" >{{user.ticket_status}} </td>
+               <ng-template #NoTicketStatus>
+                <td>
+                 {{"Not Available"}}
+                </td> 
+               </ng-template>         
+              
+
+              </ng-container>
+            </ng-container>
+
+            <ng-template #isGlobal>
+
+              <ng-container *ngIf="(user.time_to_resolve>60 ||user.time_to_first_announcement>15) && user.ticket_id==null">
+  
+                 <td >
+                  <a href="https://jtrack.wdf.sap.corp/browse/{{user.outage_name}}" target="_blank">
+                    {{user.outage_name}}
+                   
+                  </a>
+                </td>
+
+                <td>{{user.service_id}}</td>
+
+                 <td>
+                  
+                  {{user.incident_date_time}}</td>
+
+                <ng-container *ngIf="isAdmin">  
+                 <td >
+                  <mat-icon style="margin-right: 8px; color:black;">person</mat-icon>
+                  {{user.reporter_full_name}}
+                </td>
+                </ng-container>
+
+
+                <td *ngIf="user.impairment_type&& user.impairment_type.length>0; else NoImpairmentAvailable" >{{user.impairment_type}} </td>
+                <ng-template #NoImpairmentAvailable>
+                 <td>
+                  {{"Not Available"}}
+                 </td> 
+                </ng-template>
+
+           
+                 <td *ngIf="user.time_to_resolve>60; else NoTTR"  style="color:red">{{"Yes"}}</td>         
+                 <ng-template #NoTTR>
+                  <td style="color:green">{{"No"}}</td>
+                 </ng-template>                         
+                 <td *ngIf="user.time_to_first_announcement>15; else NoTTI" style="color:red">{{"Yes"}}</td>                 
+                 <ng-template #NoTTI>
+                  <td style="color:green">{{"No"}}</td>
+                 </ng-template>   
+                 
+                 
+                    <td *ngIf="user.ticket_id; else NoTicketID">
+                      <!--Here I am displaying the outage Status-->
+                        <a href="https://jtrack.wdf.sap.corp/browse/{{user.ticket_id}}" target="_blank" style="color:blue">
+                          {{user.ticket_id}}
+                        </a>
+                     </td>   
+                    <ng-template #NoTicketID>
+                      <td>
+                      {{ "Not Available" }}
+                      </td>
+                    </ng-template>  
+                    
+                    
+                <td *ngIf="user.ticket_status && user.ticket_status.length > 0; else NoTicketStatus" >{{user.ticket_status}} </td>
+                <ng-template #NoTicketStatus>
+                 <td>
+                  {{"Not Available"}}
+                 </td> 
+                </ng-template>
+
+                </ng-container>
+             </ng-template>
              
-           </tr> 
+            </tr>  
           </ng-container>
          </tbody>
        </table>

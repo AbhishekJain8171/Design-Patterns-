@@ -15,26 +15,15 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./sidebar-nav.component.css']
 })
 export class SidebarNavComponent implements OnInit,AfterViewInit{
-  
-  //Here are declaring the variable to check whether Home,open and closed tab is clicked or not
-  //Intially the tabs are not clicked so we are declaring the value of variable as false
+ 
   closedTabClicked=false;
   homeTabClicked=false;
   openTabClicked=false;
   fetch=false;
   notification=false;
   countPIRTickets: string ="0" ;
-
-  
-  
-
-  //Here are storing the information of Login User 
-  //Information comes from table PIR_Login in Incident Dragon which contains information 
   loginusers:LoginUser[];
   
-
-  //Here are Using LoginUserService in order to get information about Login user
-  //We are using Router in order to perform the navigation operation
   constructor(private router:Router,private loginService:LoginUserService,private Date:DataPickerServiceTsService, private changeDetectorRef: ChangeDetectorRef,private user:LoginId,private toastr: ToastrService)
   {
     this.loginService.getLoginUser().subscribe((data:LoginUser[])=>{  
@@ -54,12 +43,18 @@ startDateInput: any;
 endDateInput: any;
 
 
-fetchDate() {   
+fetchDate() {  
+  
+  if (!this.startDateInput || !this.endDateInput) {
+    alert("Please enter both a start date and an end date.");
+  } 
+  else{
   this.startDate = this.startDateInput;
   this.endDate = this.endDateInput;
   this.Date.setStartDate(this.startDate);
   this.Date.setEndDate(this.endDate);
   this.router.navigate(['/filter']);
+  }
   
 }
 
@@ -74,11 +69,9 @@ Notification()
 
 }
 
-//this function will work when someone clicked on the OpenTab
  OpenButtonClicked()
  {
-   //Here we are setting OpenTabClicked to true in order to inform the Angular OpenTab should open at this time
-   //By using that we are making some only OpenTab is diplayed and no other will open
+   
    this.homeTabClicked=false;
    this.openTabClicked=true;
    this.closedTabClicked=false;
@@ -89,11 +82,10 @@ Notification()
 
 
 
- //this function will work when someone clicked on the closedButtonTab
+
  closedButtonClicked()
  {
-  //Here we are setting ClosedTabClicked to true in order to inform the Angular CloseTab should open at this time
-   //By using that we are making some only CloseTab is diplayed and no other will open  
+   
   this.homeTabClicked=false;
   this.openTabClicked=false;
   this.closedTabClicked=true;
@@ -102,37 +94,29 @@ Notification()
  }
 
 
-
-//this function will work when someone clicked on the homeButton
  homeButtonClicked()
  {
- //Here we are setting homeButtonClicked to true in order to inform the Angular homeButtonTab should open at this time
- //By using that we are making some only homeTab is diplayed and no other will open
+ 
   this.homeTabClicked=true;
   this.openTabClicked=false;
   this.closedTabClicked=false;
   this.fetch=false;
   this.notification=false;
 
-
-
  }
 
 
 
- //Here are implementing the Logout feature and telling the angular move to Login Screen
+ 
  Logout()
  {
-  //Router used which is provide by Angular and here I am saying move to Login screen some clicked Logout Button
+  
   this.router.navigate(['/']);
  }
 
 
-
-
-//Here are defining the Logic what should happen when someone first come to Main screen
  ngOnInit(): void {
-  //Here are telling to the Angular please open Home tab as a default when someone first time Enter the Main Screen 
+  
   this.homeTabClicked=true;
   this.openTabClicked=false;
   this.closedTabClicked=false;
@@ -144,9 +128,6 @@ Notification()
 
  ngAfterViewInit(): void {
   this.changeDetectorRef.detectChanges();
-
-  
- 
 }
 
 

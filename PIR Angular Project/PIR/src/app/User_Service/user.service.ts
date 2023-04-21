@@ -30,8 +30,8 @@ export class UserService {
        this.Is_Admin=this.loginService.getAdminStatus();  
 
       //here I am creating the url in order to get the information from spring boot based on certain Id
-      this.url="http://localhost:8080/"+Id+"/"+this.Is_Admin;
-
+      // //this.url="http://localhost:8080/"+Id+"/"+this.Is_Admin;
+      this.url="http://localhost:8080/PriorityDashboardRevamped/pir/tickets/"+"I531804"+"/"+"isAdmin";
       //here we are return the information of user 
       return this.http.get<User[]>(`${this.url}`);
   }

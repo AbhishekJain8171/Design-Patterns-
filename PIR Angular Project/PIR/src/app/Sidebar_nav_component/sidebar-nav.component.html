@@ -1,29 +1,23 @@
-<!--Here are using Angular material Library in order to display information to UI-->
-
-
 <mat-toolbar>
   <mat-toolbar-row>
-     <!--Here are mention the Image of SAP-->
+   
       <div class="imgcontainer">
           <img src="assets\img\sap.png"  alt="Avatar" class="avatar">  
-          <mat-icon style="margin-left:30px; color:black;" >dashboard</mat-icon> 
-           
+          <mat-icon style="margin-left:30px; color:black;" >dashboard</mat-icon>        
      </div>
           
-
-     <div class="toolbar-heading" style="color: black;">PIR Dashboard</div>
-
+     <div class="toolbar-heading" style="color: black;">Post Incident Review </div>
 
     <div style="position: absolute; top: 0; right: 0; display: flex; align-items: center;">
       <mat-icon style="color: black;">account_circle</mat-icon>
-      <tr *ngFor="let user of loginusers">
-        <span style="color:black; font-size:13px;" >Hey,{{user.reporterName}}</span>
-        </tr>
+    
+        <span style="color:black; font-size:13px;" >Hey,Abhishek Jain</span>
+        
 
       <div class="notification-button">
         <button mat-button class="menu-button notification no-shadow" (click)="Notification()">
           <mat-icon style="color: red;">notifications</mat-icon>
-          <span style="color: red;" [innerHTML]="countPIRTickets"></span>
+          <span style="color: red;" [innerHTML]=""></span>
         </button>
       </div>
     </div>
@@ -33,46 +27,46 @@
 
 <mat-sidenav-container class = "tp-container">
   <mat-sidenav #sidenav="matSidenav" mode = "side" opened >
-      <!--Here we are button for home and define its icon-->
+      
       <section class = "tp-section">    
       <button mat-button class="menu-button"  (click)="homeButtonClicked()">
-          <mat-icon >home</mat-icon>
-          <span >Home</span>
+          <mat-icon >insert_drive_file</mat-icon>
+          <span >Records</span>
       </button>
       </section>
 
       <mat-divider></mat-divider>
-      <!--Here we are button for openTab and define its icon-->
+    
       <section class = "tp-section">
       <button mat-button class="menu-button" (click)="OpenButtonClicked()">
           <mat-icon>alarm</mat-icon>
-          <span>Open</span>
+          <span>Breach</span>
       </button>
       </section>
        
-       <!--Here are creating the separation of mat-icon by creating line like this --- 
-       -->
+      
       <mat-divider></mat-divider>
     
-        <!--Here we are button for closeTab and define its icon-->
+       
       <section class = "tp-section">
       <button mat-button class="menu-button" (click)="closedButtonClicked()">
           <mat-icon>alarm_off</mat-icon>
-          <span>closed</span>
+          <span>Warning</span>
       </button>
       </section>
-       <!--Here are creating the separation of mat-icon by creating line like this --- 
-       -->
+     
+    <!--  
       <mat-divider></mat-divider>
-        <!--Here we are button for LogoutTab and define its icon-->
+    
       <section class = "tp-section" (click)="Logout()">
       <mat-icon>exit_to_app  </mat-icon>
       <span style='margin-right:1.25em; display:inline-block;'>&nbsp; Logout</span>
       </section>    
       <mat-divider></mat-divider>
+    -->
   </mat-sidenav>
 
-<!--Here we are mentioning what should we visible as the content of UI-->
+
   <mat-sidenav-content >
         <div class="input-container">
           <label for="start-date">Start Date:</label>
@@ -89,25 +83,21 @@
         </div>
     
       
-
-      <!-- Here are defining that when someone clicked on HomeTabClicked button then appuser component should be visible -->
       <div *ngIf="homeTabClicked">
           <app-user></app-user>
       </div>
 
-     <!-- Here are defining that when someone clicked on openTabClicked button then app-open-user-component should be visible -->
+     
       <div *ngIf=" openTabClicked">
           <app-open-user-component></app-open-user-component>
       </div>
 
-
-      <!-- Here are defining that when someone clicked on closeTabClicked button then app-closed-user component should be visible to the user -->
       <div *ngIf="closedTabClicked">
           <app-closed-user></app-closed-user>
       </div>
 
       <div *ngIf="notification">
-        <app-notification></app-notification>
+        <app-user></app-user>
     </div>
       
   </mat-sidenav-content>
