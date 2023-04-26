@@ -16,18 +16,24 @@ import com.PostIncidentRelease.Dashboard.Service.Service;
 @RestController
 public class UserController {
 
-	//Here we are telling Spring Boot to provide the object of Service class
 	@Autowired
 	private Service service;
 	
 	@CrossOrigin(origins="http://localhost:4200")
-	@GetMapping("/{Id}")
-	public ResponseEntity<List<User>> getUser(@PathVariable("Id") String Id)
+	@GetMapping("/tickets/{Id}/{Is_Admin}")
+	public ResponseEntity<List<User>> getUser(@PathVariable("Id") String Id,@PathVariable("Is_Admin") String Is_Admin)
 	{ 
 		List<User> userList =null;
 		try {
-		//We are returning the records of user in json format 
-		    userList=service.getUserByReporterId(Id);
+			 if(Is_Admin.equals("isAdmin"))  
+			 {
+				  userList=service.getAllRecords(); 
+			 }
+			 else
+			 {
+				  userList=service.getUserByReporterId(Id); 
+			 }	 
+		  
 		}
 	    catch(Exception e)
 	    {
@@ -35,38 +41,9 @@ public class UserController {
 	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	    }
 		
-		//Here we are checking whether we have user Records or not 
-		//if userList is empty means there is no record so we will return the status code not found 
 		if(userList.size()<=0)
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		
-		
-		//if userList is not Empty that means we have records so we can return the List
-		return ResponseEntity.of(Optional.of(userList));	
-	}
-	
-	
-	@CrossOrigin(origins="http://localhost:4200")
-	@GetMapping("/login/{Id}/{Password}")
-	public ResponseEntity<List<Login_User>> userAuthentication(@PathVariable("Id") String Id,@PathVariable("Password") String Password)
-	{ 
-		List<Login_User> userList =null;
-		try {
-	    	    userList=service.AuthenticationCheck(Id,Password);
-		    }
-	    catch(Exception e)
-	    {
-	    	e.printStackTrace();
-	    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
-		
-		//Here we are checking whether we have user Records or not 
-		//if userList is empty means there is no record so we will return the status code not found 
-		if(userList.size()<=0) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
-		
-		//if userList is not Empty that means we have records so we can return the List
 		return ResponseEntity.of(Optional.of(userList));	
 	}
 	

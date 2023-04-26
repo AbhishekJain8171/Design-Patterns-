@@ -11,21 +11,40 @@ import com.PostIncidentRelease.Dashboard.Entitiy.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String>{
+    
+    @Query(value="\r\n"
+    		+ "  	SELECT JD.OutageName,\r\n"
+    		+ "	CASE COUNT(DISTINCT C.ServiceID)\r\n"
+    		+ "			          WHEN 1 THEN MAX(C.ServiceID) \r\n"
+    		+ "			               ELSE 'MULTIPLE SERVICE' \r\n"
+    		+ "			       END AS ServiceID\r\n"
+    		+ "			    ,JD.Reporter_FullName,JD.Impairment_Type,JD.IncidentDateTime,JD.ReporterBy,JD.TimeToResolve,JD.TimeToFirstAnnouncement ,\r\n"
+    		+ "			    R.Ticket_ID, R.Ticket_Summary, R.Ticket_Status,R.Reporter, R.Reporter_EmailID \r\n"
+    		+ "			FROM CP_JIRA_Outage_Dtls JD\r\n"
+    		+ "			LEFT JOIN CP_Outage_AffectedServices C ON C.OutageName= JD.OutageName  \r\n"
+    		+ "			LEFT JOIN CP_Jira_Outage_Issue_Links IL ON IL.OutageName = JD.OutageName\r\n"
+    		+ "			LEFT JOIN CP_Jira_CSI_Register R ON R.Ticket_ID = IL.IssueLink_TicketId\r\n"
+    		+ "		    where JD.ReporterBy=:n \r\n"
+    		+ "         GROUP BY JD.OutageName, JD.Reporter_FullName,JD.Impairment_Type, JD.IncidentDateTime, JD.ReporterBy, JD.TimeToResolve, JD.TimeToFirstAnnouncement, R.Ticket_ID, R.Ticket_Summary, R.Ticket_Status,R.Reporter,R.Reporter_EmailID order By JD.IncidentDateTime Desc ", nativeQuery = true)
+	 List<User> findReporter(@Param("n") String ReporterBy);
+		 
+	 
+	 
+  
+	 @Query(value="SELECT JD.OutageName,\r\n"
+	 		+ "	CASE COUNT(DISTINCT C.ServiceID)\r\n"
+	 		+ "			          WHEN 1 THEN MAX(C.ServiceID) \r\n"
+	 		+ "			               ELSE 'MULTIPLE SERVICE' \r\n"
+	 		+ "			       END AS ServiceID\r\n"
+	 		+ "			    ,JD.Reporter_FullName,JD.Impairment_Type,JD.IncidentDateTime,JD.ReporterBy,JD.TimeToResolve,JD.TimeToFirstAnnouncement ,\r\n"
+	 		+ "			    R.Ticket_ID, R.Ticket_Summary, R.Ticket_Status,R.Reporter, R.Reporter_EmailID  \r\n"
+	 		+ "			FROM CP_JIRA_Outage_Dtls JD\r\n"
+	 		+ "			LEFT JOIN CP_Outage_AffectedServices C ON C.OutageName= JD.OutageName  \r\n"
+	 		+ "			LEFT JOIN CP_Jira_Outage_Issue_Links IL ON IL.OutageName = JD.OutageName\r\n"
+	 		+ "			LEFT JOIN CP_Jira_CSI_Register R ON R.Ticket_ID = IL.IssueLink_TicketId\r\n"
+	 		+ "            GROUP BY JD.OutageName, JD.Reporter_FullName,JD.Impairment_Type, JD.IncidentDateTime, JD.ReporterBy, JD.TimeToResolve, JD.TimeToFirstAnnouncement, R.Ticket_ID, R.Ticket_Summary, R.Ticket_Status,R.Reporter, R.Reporter_EmailID order By JD.IncidentDateTime Desc ",nativeQuery = true)
+        List<User> findAllRecords();
 
-	//Here we fetching the records form 'CP_JIRA_Outage_Dtls_test' table defined in Dragon_Incident by using JP
-	 @Query("select u From CP_JIRA_Outage_Dtls_test u WHERE u.ReporterBy =:n")
-	 public List<User> findReporter(@Param("n") String ReporterBy);
-	
-	 //Here we are check whether we have user in User Login table if yes then we can authenticate the user 
-	 //Else we will inform to the application please do not authenticate the user
-	 @Query("select u From PIR_Login u WHERE u.Reporter_Id =:n and u.Password =:p")
-	 public List<Login_User> checkAuthentication(@Param("n") String Reporter_Id, @Param("p") String Password);
-	 
-	 
-	 //Here we will create the query for fetching records from 'CP_JIRA_Outage_Dtls_test'where TTI or TTR records
-	 //We will fetch records where TTI and TTR level reach and Ce needs to take action
-	 @Query("select u From CP_JIRA_Outage_Dtls_test u WHERE u.TimeToResolve>40 or u. u.ReporterBy =:n ")
-	 public List<User> findOpenRecords(@Param("n") String ReporterBy);
 	
 	
 	 
